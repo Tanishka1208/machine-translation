@@ -1,0 +1,14 @@
+
+venv/
+__pycache__/
+*.pyc
+
+wandb/
+.cache/
+
+# checkpoints/*.pt
+
+*.pth
+# *.pt
+
+.DS_Store
