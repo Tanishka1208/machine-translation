@@ -491,10 +491,21 @@ class Transformer(nn.Module):
         self.max_len  = max_len
 
         # ── 1. Load spacy tokenizers ───────────────────────────────────
+        # ── 1. Load spacy tokenizers (auto-download if missing) ────────
         import spacy
-        self.spacy_de = spacy.load("de_core_news_sm")
-        self.spacy_en = spacy.load("en_core_web_sm")
+        from spacy.cli import download as spacy_download
 
+        try:
+            self.spacy_de = spacy.load("de_core_news_sm")
+        except OSError:
+            spacy_download("de_core_news_sm")
+            self.spacy_de = spacy.load("de_core_news_sm")
+
+        try:
+            self.spacy_en = spacy.load("en_core_web_sm")
+        except OSError:
+            spacy_download("en_core_web_sm")
+            self.spacy_en = spacy.load("en_core_web_sm")
         # ── 2. Download vocab.pt if not present, then load ─────────────
         # ── 2. Load vocab.pt if it exists, else use passed-in vocab sizes ──
         vocab_path = "vocab.pt"
